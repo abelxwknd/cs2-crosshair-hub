@@ -1,23 +1,31 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+
+type Crosshair = {
+  id: number;
+  name: string;
+  code: string;
+};
+
 export default function Home() {
-  const crosshairs = [
-    {
-      id: 1,
-      name: "Faceit",
-      code: "CSGO-xxxxx-xxxxx-xxxxx",
-    },
-    {
-      id: 2,
-      name: "Premier",
-      code: "CSGO-yyyyy-yyyyy-yyyyy",
-    },
-    {
-      id: 3,
-      name: "AWP",
-      code: "CSGO-zzzzz-zzzzz-zzzzz",
-    },
-  ];
+  const [crosshairs, setCrosshairs] = useState<Crosshair[]>([]);
+
+  useEffect(() => {
+    loadCrosshairs();
+  }, []);
+
+  async function loadCrosshairs() {
+    const { data, error } = await supabase
+      .from("approved_crosshairs")
+      .select("*")
+      .order("id", { ascending: false });
+
+    if (!error && data) {
+      setCrosshairs(data);
+    }
+  }
 
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -27,10 +35,12 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="max-w-6xl mx-auto p-8">
-        <h1 className="text-5xl font-bold mb-2">CS2 Crosshairs</h1>
+        <h1 className="text-5xl font-bold mb-2">
+          CS2 Crosshairs
+        </h1>
 
         <p className="text-gray-400 mb-8">
-          My personal crosshair database
+          Community Crosshair Database
         </p>
 
         <div className="grid md:grid-cols-3 gap-4">
@@ -53,7 +63,7 @@ export default function Home() {
 
               <button
                 onClick={() => copyCode(crosshair.code)}
-                className="mt-4 w-full bg-red-600 hover:bg-red-700 py-2 rounded-lg font-medium"
+                className="mt-4 w-full bg-red-600 hover:bg-red-700 py-2 rounded-lg"
               >
                 Copy Code
               </button>
