@@ -38,7 +38,7 @@ export default function Home() {
     }
   }, []);
 
-async function fetchCrosshairs() {
+  async function fetchCrosshairs() {
     const { data } = await supabase
       .from("approved_crosshairs")
       .select("*")
@@ -59,7 +59,7 @@ async function fetchCrosshairs() {
   };
 
   const handleLike = async (id: number, currentLikes: number) => {
-    if (processingId === id) return; // Spam koruması için kilitli
+    if (processingId === id) return;
     setProcessingId(id);
 
     const isAlreadyLiked = likedCrosshairs.includes(id);
@@ -270,17 +270,14 @@ async function fetchCrosshairs() {
 
                   {/* Görsel Alanı */}
                   <div className="w-full h-40 bg-black/60 rounded-2xl border border-zinc-800/80 p-2 mb-3 flex items-center justify-center overflow-hidden group-hover:border-zinc-700 transition">
-{/* Görsel Alanı */}
-<div className="w-full h-40 bg-black/60 rounded-2xl border border-zinc-800/80 p-2 mb-3 flex items-center justify-center overflow-hidden group-hover:border-zinc-700 transition">
-  <img
-    src={item.image || "/crosshairs/default.png"}
-    onError={(e) => {
-      (e.target as HTMLImageElement).src = "/crosshairs/default.png";
-    }}
-    alt={item.name}
-    className="w-full h-full object-contain"
-  />
-</div>
+                    <img
+                      src={item.image || "/crosshairs/default.png"}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/crosshairs/default.png";
+                      }}
+                      alt={item.name}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
 
                   {/* Oyuncu & Takım İsmi */}
@@ -311,32 +308,34 @@ async function fetchCrosshairs() {
             );
           })}
         </section>
-<section className="max-w-4xl mx-auto mt-20 py-10 px-6 bg-zinc-900/30 border border-zinc-800/50 rounded-3xl backdrop-blur-md">
-  <h2 className="text-2xl font-black text-center mb-8 bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
-    Sistem Nasıl Çalışır?
-  </h2>
-  
-  <div className="grid md:grid-cols-2 gap-8">
-    <div className="space-y-3">
-      <h3 className="font-bold text-red-400 flex items-center gap-2">
-        <span>⚙️</span> Nişangah Aktarımı
-      </h3>
-      <p className="text-sm text-zinc-400 leading-relaxed">
-        Valve, güvenlik politikaları gereği oyun içi verilerin dışarıdan otomatik olarak çekilmesine veya siteye doğrudan aktarılmasına izin vermemektedir. 
-        Bu nedenle, beğendiğiniz bir nişangahı kullanmak için <strong>"Kodu Kopyala"</strong> butonunu kullanarak kodu kopyalamanız ve oyun içerisindeki "Crosshair" ayarları kısmına yapıştırmanız gerekmektedir.
-      </p>
-    </div>
-    
-    <div className="space-y-3">
-      <h3 className="font-bold text-red-400 flex items-center gap-2">
-        <span>🛡️</span> Moderasyon Süreci
-      </h3>
-      <p className="text-sm text-zinc-400 leading-relaxed">
-        Sitemize gönderilen her nişangah doğrudan yayınlanmaz. "Crosshair Gönder" formunu kullanarak eklediğiniz kodlar, uygunluk ve doğruluk açısından <strong>admin onayından</strong> geçer. Onaylanan nişangahlar kısa süre içerisinde kütüphanemize eklenerek diğer oyuncularla paylaşılır.
-      </p>
-    </div>
-  </div>
-</section>
+
+        <section className="max-w-4xl mx-auto mt-20 py-10 px-6 bg-zinc-900/30 border border-zinc-800/50 rounded-3xl backdrop-blur-md">
+          <h2 className="text-2xl font-black text-center mb-8 bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+            Sistem Nasıl Çalışır?
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <h3 className="font-bold text-red-400 flex items-center gap-2">
+                <span>⚙️</span> Nişangah Aktarımı
+              </h3>
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                Valve, güvenlik politikaları gereği oyun içi verilerin dışarıdan otomatik olarak çekilmesine veya siteye doğrudan aktarılmasına izin vermemektedir. 
+                Bu nedenle, beğendiğiniz bir nişangahı kullanmak için <strong>"Kodu Kopyala"</strong> butonunu kullanarak kodu kopyalamanız ve oyun içerisindeki "Crosshair" ayarları kısmına yapıştırmanız gerekmektedir.
+              </p>
+            </div>
+            
+            <div className="space-y-3">
+              <h3 className="font-bold text-red-400 flex items-center gap-2">
+                <span>🛡️</span> Moderasyon Süreci
+              </h3>
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                Sitemize gönderilen her nişangah doğrudan yayınlanmaz. "Crosshair Gönder" formunu kullanarak eklediğiniz kodlar, uygunluk ve doğruluk açısından <strong>admin onayından</strong> geçer. Onaylanan nişangahlar kısa süre içerisinde kütüphanemize eklenerek diğer oyuncularla paylaşılır.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {filteredCrosshairs.length === 0 && (
           <div className="text-center py-20 text-zinc-500">
             Aradığınız kriterlere uygun nişangah bulunamadı.

@@ -14,7 +14,6 @@ export async function POST(request: Request) {
     // Doğrudan Vercel Blob depolama alanına yükler
     const blob = await put(`crosshairs/${playerSlug}.png`, file, {
       access: 'public',
-      overwrite: true,
     });
 
     return NextResponse.json({
