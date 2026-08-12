@@ -11,15 +11,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Görsel dosyası bulunamadı." }, { status: 400 });
     }
 
-    // Dosyayı Vercel Blob'a yükle
+    // Doğrudan Vercel Blob depolama alanına yükler
     const blob = await put(`crosshairs/${playerSlug}.png`, file, {
       access: 'public',
+      allowOutsidePublicDir: true,
+      overwrite: true,
     });
 
     return NextResponse.json({
       success: true,
-      message: "Görsel başarıyla buluta yüklendi.",
-      url: blob.url, // Yüklenen dosyanın internet adresi
+      message: "Görsel başarıyla buluta kaydedildi.",
+      url: blob.url,
     });
   } catch (error) {
     console.error("Vercel Blob yükleme hatası:", error);

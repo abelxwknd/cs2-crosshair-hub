@@ -101,13 +101,14 @@ export default function CrosshairCropperPage() {
     }
   };
 
-  // 💾 Sunucuya / Veritabanına Kaydetme (İsteğe bağlı oyuncu profiline bağlama)
+  // 💾 Vercel Blob'a Kaydetme (Doğru kırpılmış görseli gönderir)
   const handleSaveToDatabase = async () => {
     if (!croppedBlob) return;
     const playerSlug = prompt("Bu crosshair hangi oyuncuya veya profile ait? (Örn: s1mple, m0NESY)", "custom-crosshair");
     if (!playerSlug) return;
 
     const formData = new FormData();
+    // Orijinal dosya yerine işlenmiş/kırpılmış küçük crosshair blob'u eklenir
     formData.append("file", croppedBlob, `${playerSlug}.png`);
     formData.append("playerSlug", playerSlug);
 
@@ -119,7 +120,7 @@ export default function CrosshairCropperPage() {
 
       if (res.ok) {
         setSaved(true);
-        alert(`Crosshair başarıyla kaydedildi! (/public/crosshairs/${playerSlug}.png)`);
+        alert(`Crosshair başarıyla buluta kaydedildi!`);
       } else {
         alert("Kaydedilirken bir hata oluştu.");
       }
@@ -163,7 +164,6 @@ export default function CrosshairCropperPage() {
           />
 
           {previewUrl ? (
-            /* Görsel Seçildiyse Anlık Önizleme (Image Preview) */
             <div className="flex flex-col items-center gap-3 w-full">
               <div className="relative w-full max-h-56 overflow-hidden rounded-xl border border-neutral-700 bg-black/60 flex items-center justify-center">
                 <img
@@ -177,7 +177,6 @@ export default function CrosshairCropperPage() {
               </p>
             </div>
           ) : (
-            /* Henüz Dosya Seçilmediyse Varsayılan Yükleme Görünümü */
             <>
               <div className="w-12 h-12 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300 text-xl">
                 📸
@@ -228,7 +227,6 @@ export default function CrosshairCropperPage() {
 
             {/* Aksiyon Butonları */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {/* 1. İndir */}
               <button
                 onClick={handleDownload}
                 className="py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 text-sm"
@@ -236,7 +234,6 @@ export default function CrosshairCropperPage() {
                 💾 İndir
               </button>
 
-              {/* 2. Panoya Kopyala */}
               <button
                 onClick={handleCopyToClipboard}
                 className="py-3 px-4 bg-neutral-800 hover:bg-neutral-700 text-white font-medium rounded-xl transition-all flex items-center justify-center gap-2 text-sm border border-neutral-700"
@@ -244,7 +241,6 @@ export default function CrosshairCropperPage() {
                 {copied ? "✅ Kopyalandı!" : "📋 Panoya Kopyala"}
               </button>
 
-              {/* 3. Projeye / Veritabanına Kaydet */}
               <button
                 onClick={handleSaveToDatabase}
                 className="py-3 px-4 bg-neutral-800 hover:bg-neutral-700 text-green-400 font-medium rounded-xl transition-all flex items-center justify-center gap-2 text-sm border border-neutral-700"
@@ -253,7 +249,6 @@ export default function CrosshairCropperPage() {
               </button>
             </div>
 
-            {/* Yeni Fotoğraf Yükleme Butonu */}
             <button
               onClick={() => {
                 setFile(null);
