@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 
 export async function POST(request: Request) {
   try {
@@ -12,25 +11,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Görsel dosyası bulunamadı." }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-
-    // Kaydedilecek klasör: public/crosshairs
-    const targetDir = path.join(process.cwd(), "public", "crosshairs");
-
-    // Klasör yoksa otomatik oluştur
-    await fs.mkdir(targetDir, { recursive: true });
-
-    // Dosyayı diske yaz
-    const filePath = path.join(targetDir, `${playerSlug}.png`);
-    await fs.writeFile(filePath, buffer);
+    // Dosyayı Vercel Blob'a yükle
+    const blob = await put(`crosshairs/${playerSlug}.png`, file, {
+      access: 'public',
+    });
 
     return NextResponse.json({
       success: true,
-      message: "Görsel başarıyla kaydedildi.",
-      path: `/crosshairs/${playerSlug}.png`,
+      message: "Görsel başarıyla buluta yüklendi.",
+      url: blob.url, // Yüklenen dosyanın internet adresi
     });
   } catch (error) {
-    console.error("Kaydetme sırasında sunucu hatası:", error);
+    console.error("Vercel Blob yükleme hatası:", error);
     return NextResponse.json({ error: "Görsel kaydedilemedi." }, { status: 500 });
   }
 }
