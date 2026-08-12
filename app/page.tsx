@@ -270,14 +270,17 @@ async function fetchCrosshairs() {
 
                   {/* Görsel Alanı */}
                   <div className="w-full h-40 bg-black/60 rounded-2xl border border-zinc-800/80 p-2 mb-3 flex items-center justify-center overflow-hidden group-hover:border-zinc-700 transition">
-                    <img
-                      src={`/crosshairs/${item.name.toLowerCase()}.png`}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/crosshairs/default.png";
-                      }}
-                      alt={item.name}
-                      className="w-full h-full object-contain"
-                    />
+{/* Görsel Alanı */}
+<div className="w-full h-40 bg-black/60 rounded-2xl border border-zinc-800/80 p-2 mb-3 flex items-center justify-center overflow-hidden group-hover:border-zinc-700 transition">
+  <img
+    src={item.image || "/crosshairs/default.png"}
+    onError={(e) => {
+      (e.target as HTMLImageElement).src = "/crosshairs/default.png";
+    }}
+    alt={item.name}
+    className="w-full h-full object-contain"
+  />
+</div>
                   </div>
 
                   {/* Oyuncu & Takım İsmi */}
